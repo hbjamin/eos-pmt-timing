@@ -183,6 +183,13 @@ def removeNoiseAfterLatePeak(time,prob):
             return time[:-1-i],prob[:-1-i]
     return time,prob
 
+# Only used for R7081
+def removeZerosAtEnd(time,prob):
+    while prob[-1]==0: 
+        time.pop()
+        prob.pop()
+    return time,prob
+
 def main():
     
     # Hardcoded variables for timing resolution and domain of pdf
@@ -287,6 +294,9 @@ def main():
         if i==0:
             # Remove dark rate after late peak 
             time_new,prob_new=removeNoiseAfterLatePeak(time_new,prob_new)
+        elif i==1:
+            # Remove extra zeros at the end
+            time_new,prob_new=removeZerosAtEnd(time_new,prob_new)
         plt.plot(time_new,prob_new,color='orange')
         plt.yscale('log')
         plt.ylim(1e-6,1)
